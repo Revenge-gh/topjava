@@ -44,10 +44,6 @@ public class MealServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.info("forward to meals");
-        request.setAttribute("meals", getTos(meals, DEFAULT_CALORIES_PER_DAY));
-        request.getRequestDispatcher("/meals.jsp").forward(request, response);
-
         String action = request.getParameter("action");
 
         switch (action == null ? "all" : action) {
@@ -59,15 +55,11 @@ public class MealServlet extends HttpServlet {
                 break;
             case "create":
             case "update":
-                log.info("зашли в создание и обновление");
                 final Meal meal = "create".equals(action) ?
                         new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
                         mealRepository.get(getId(request));
-                log.info("создали или обновили");
                 request.setAttribute("meal", meal);
-                log.info("добавили атрибут");
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
-                log.info("отправили на милформ");
                 break;
             case "all":
             default:
