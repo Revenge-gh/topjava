@@ -62,13 +62,13 @@ public class InMemoryMealRepository implements MealRepository {
         return filterByPredicate(userId, meal -> true);
     }
 
-    public List<Meal> filterByPredicate(int userId, Predicate<Meal> filter) {
+    private List<Meal> filterByPredicate(int userId, Predicate<Meal> filter) {
         Map<Integer, Meal> meals = usersMealsMap.get(userId);
-        return CollectionUtils.isEmpty(meals) ? Collections.emptyList()
-                : meals.values().stream()
-                .filter(filter)
-                .sorted(Comparator.comparing(Meal::getDate).reversed())
-                .collect(Collectors.toList());
+        return CollectionUtils.isEmpty(meals) ? Collections.emptyList() :
+                meals.values().stream()
+                        .filter(filter)
+                        .sorted(Comparator.comparing(Meal::getDateTime).reversed())
+                        .collect(Collectors.toList());
     }
 }
 
